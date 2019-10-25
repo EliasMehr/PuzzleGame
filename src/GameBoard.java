@@ -1,21 +1,21 @@
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class GameBoard extends JFrame {
-    Utilities utilities = new Utilities();
-
-    ImageIcon logoType = new ImageIcon("src/LOGOTYPE/logotype.png");
-    JLabel logotypeLabel= new JLabel(logoType);
-    JPanel logotypePanel = new JPanel();
-    JPanel tilePanel = new JPanel();
-
-    private List<Tiles> tilesList = new ArrayList<>();
     private int tileID = 1;
     private int width = 600;
     private int height = 600;
+    private List<Tile> tileList;
+
+    Utilities utilities = new Utilities();
+
+    ImageIcon logoType = new ImageIcon("src/LOGOTYPE/logotype.png");
+    JLabel logotypeLabel = new JLabel(logoType);
+    JPanel logotypePanel = new JPanel();
+    JPanel tilePanel = new JPanel();
 
     GameBoard() {
         GridLayout brickGridLayout = new GridLayout(4, 4);
@@ -33,13 +33,11 @@ public class GameBoard extends JFrame {
         logotypePanel.setLayout(logoLayout);
         tilePanel.setLayout(brickGridLayout);
 
-        for (int i = 0; i < 16 ; i++) {
-            Tiles createTiles = new Tiles();
-            createTiles.setTiles(new JButton(new ImageIcon("src/GFX/brick" + tileID + ".png")));
-            tileID++;
-            tilePanel.add(createTiles.getTiles());
-            tilesList.add(createTiles);
-        }
+        // Graphic engine
+        tileList = initiateTiles();
+        shuffleTiles(tileList);
+        renderTiles(tileList);
+
         utilities.startBackgroundMusic("src/SFX/bgMusic.wav");
 
         setTitle("15 Puzzle Game by Elias & Valle");
@@ -47,5 +45,28 @@ public class GameBoard extends JFrame {
         setResizable(false);
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+    }
+
+    // Initiating the tiles and giving correct imageIcon, ID and creating JButtons
+    public List<Tile> initiateTiles() {
+        List<Tile> tiles = new ArrayList();
+        for (int i = 0; i < 16; i++) {
+            Tile createdTile = new Tile(new JButton(new ImageIcon("src/GFX/brick" + tileID + ".png")), tileID);
+            tileID++;
+            tiles.add(createdTile);
+        }
+        return tiles;
+    }
+
+    // Renders the Tiles onMouseActionEvent and repaints to JPanel after an update!
+    public void renderTiles(List<Tile> tiles) {
+        tiles.forEach(tile -> {
+            tilePanel.add(tile.getTiles());
+        });
+    }
+
+    // Shuffle the Tiles after TileInitiate
+    public void shuffleTiles(List<Tile> list) {
+        Collections.shuffle(list);
     }
 }

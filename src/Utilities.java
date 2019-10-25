@@ -1,7 +1,6 @@
 import javax.sound.sampled.*;
 import javax.swing.*;
 import java.io.File;
-import java.io.IOException;
 
 public class Utilities {
 
@@ -16,7 +15,7 @@ public class Utilities {
                 runSound.start();
                 runSound.loop(Clip.LOOP_CONTINUOUSLY);
 
-            } else{
+            } else {
                 JOptionPane.showMessageDialog(null, "Can't find background music file");
             }
         } catch (UnsupportedAudioFileException e) {
@@ -37,7 +36,7 @@ public class Utilities {
                 runSound.start();
                 runSound.loop(Clip.LOOP_CONTINUOUSLY);
 
-            } else{
+            } else {
                 JOptionPane.showMessageDialog(null, "Can't find background music file");
             }
         } catch (UnsupportedAudioFileException e) {
