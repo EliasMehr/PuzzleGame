@@ -34,8 +34,6 @@ public class Utilities {
                 Clip runSound = AudioSystem.getClip();
                 runSound.open(readMusic);
                 runSound.start();
-                runSound.loop(Clip.LOOP_CONTINUOUSLY);
-
             } else {
                 JOptionPane.showMessageDialog(null, "Can't find background music file");
             }
@@ -44,6 +42,10 @@ public class Utilities {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void stopBackgroundMusic(){
+
     }
 
 }
