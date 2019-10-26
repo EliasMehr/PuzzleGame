@@ -42,8 +42,6 @@ public class GameBoard extends JFrame implements ActionListener {
         renderTiles(tileList);
         addActionListener();
 
-        utilities.startBackgroundMusic("src/SFX/bgMusic.wav");
-
         setTitle("15 Puzzle Game by Elias & Valle");
         setSize(width, height);
         setResizable(false);
