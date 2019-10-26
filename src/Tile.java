@@ -2,8 +2,6 @@ import javax.swing.*;
 
 public class Tile {
     private JButton tiles;
-
-
     private int tileID;
 
     public Tile(JButton tiles, int tileId) {

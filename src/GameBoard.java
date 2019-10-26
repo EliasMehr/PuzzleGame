@@ -21,8 +21,6 @@ public class GameBoard extends JFrame implements ActionListener {
     JPanel tilePanel = new JPanel();
 
     GameBoard() {
-
-        // Creating gridLayout & FlowLayout for positioning components!
         GridLayout brickGridLayout = new GridLayout(4, 4);
         brickGridLayout.setHgap(0);
         brickGridLayout.setVgap(0);
@@ -31,7 +29,6 @@ public class GameBoard extends JFrame implements ActionListener {
         logoLayout.setHgap(0);
         logoLayout.setVgap(0);
 
-        // Adding JPanel to JFrame and positions JPanels NORTH and CENTER!
         add(logotypePanel, BorderLayout.NORTH);
         add(tilePanel, BorderLayout.CENTER);
 
@@ -44,9 +41,6 @@ public class GameBoard extends JFrame implements ActionListener {
         shuffleTiles(tileList);
         renderTiles(tileList);
         addActionListener();
-
-        // Initiates background game music
-        // utilities.startBackgroundMusic("src/SFX/bgMusic.wav");
 
         setTitle("15 Puzzle Game by Elias & Valle");
         setSize(width, height);
