@@ -96,7 +96,7 @@ public class GameBoard extends JFrame implements ActionListener {
             if (tile instanceof Tile) {
                 tile.getTiles().addActionListener(l -> {
                     System.out.println(tileList.indexOf(tile));
-                    moveTile(tile);
+                    checkIfEmptyTileIsAdjacent(tile);
                 });
             }
         }
@@ -107,19 +107,164 @@ public class GameBoard extends JFrame implements ActionListener {
 
     }
 
-    // receives the clicked tile switches with the blank tile (IF the blank tile is in the right index on the list)
-    public void moveTile(Tile clickedTile) {
+    // takes an index parameter and swaps the tile in that index with the empty tile.
+    public void moveTile(int index) {
+        Collections.swap(tileList, index, getEmptyTilePosition());
+        renderTiles(tileList);
+        tilePanel.updateUI();
+    }
+
+    // receives the clicked tile and checks if blank tile is adjacent via indexes. Calls on moveTile and sends index.
+    public void checkIfEmptyTileIsAdjacent(Tile clickedTile) {
         switch (tileList.lastIndexOf(clickedTile)) {
             case 0:
-                for (Tile tile : tileList) {
-                    if (tile.getTileID() == 16) {
-                        Collections.swap(tileList, 0, getEmptyTilePosition());
-                        renderTiles(tileList);
-                        tilePanel.updateUI();
-                    }
+                if (tileList.get(4).equals(tileList.get(getEmptyTilePosition()))) {
+                    moveTile(0);
+                } else if (tileList.get(1).equals(tileList.get(getEmptyTilePosition()))) {
+                    moveTile(0);
                 }
+                break;
+            case 1:
+                if (tileList.get(0).equals(tileList.get(getEmptyTilePosition()))) {
+                    moveTile(1);
+                } else if (tileList.get(2).equals(tileList.get(getEmptyTilePosition()))) {
+                    moveTile(1);
+                } else if (tileList.get(5).equals(tileList.get(getEmptyTilePosition()))) {
+                    moveTile(1);
+                }
+                break;
+            case 2:
+                if (tileList.get(1).equals(tileList.get(getEmptyTilePosition()))) {
+                    moveTile(2);
+                } else if (tileList.get(3).equals(tileList.get(getEmptyTilePosition()))) {
+                    moveTile(2);
+                } else if (tileList.get(6).equals(tileList.get(getEmptyTilePosition()))) {
+                    moveTile(2);
+                }
+                break;
+            case 3:
+                if (tileList.get(2).equals(tileList.get(getEmptyTilePosition()))) {
+                    moveTile(3);
+                } else if (tileList.get(7).equals(tileList.get(getEmptyTilePosition()))) {
+                    moveTile(3);
+                }
+                break;
+            case 4:
+                if (tileList.get(0).equals(tileList.get(getEmptyTilePosition()))) {
+                    moveTile(4);
+                } else if (tileList.get(5).equals(tileList.get(getEmptyTilePosition()))) {
+                    moveTile(4);
+                } else if (tileList.get(8).equals(tileList.get(getEmptyTilePosition()))) {
+                    moveTile(4);
+                }
+                break;
+            case 5:
+                if (tileList.get(1).equals(tileList.get(getEmptyTilePosition()))) {
+                    moveTile(5);
+                } else if (tileList.get(6).equals(tileList.get(getEmptyTilePosition()))) {
+                    moveTile(5);
+                } else if (tileList.get(4).equals(tileList.get(getEmptyTilePosition()))) {
+                    moveTile(5);
+                } else if (tileList.get(9).equals(tileList.get(getEmptyTilePosition()))) {
+                    moveTile(5);
+                }
+                break;
+            case 6:
+                if (tileList.get(2).equals(tileList.get(getEmptyTilePosition()))) {
+                    moveTile(6);
+                } else if (tileList.get(7).equals(tileList.get(getEmptyTilePosition()))) {
+                    moveTile(6);
+                } else if (tileList.get(10).equals(tileList.get(getEmptyTilePosition()))) {
+                    moveTile(6);
+                } else if (tileList.get(5).equals(tileList.get(getEmptyTilePosition()))) {
+                    moveTile(6);
+                }
+                break;
+            case 7:
+                if (tileList.get(3).equals(tileList.get(getEmptyTilePosition()))) {
+                    moveTile(7);
+                } else if (tileList.get(6).equals(tileList.get(getEmptyTilePosition()))) {
+                    moveTile(7);
+                } else if (tileList.get(11).equals(tileList.get(getEmptyTilePosition()))) {
+                    moveTile(7);
+                }
+                break;
+            case 8:
+                if (tileList.get(12).equals(tileList.get(getEmptyTilePosition()))) {
+                    moveTile(8);
+                } else if (tileList.get(4).equals(tileList.get(getEmptyTilePosition()))) {
+                    moveTile(8);
+                } else if (tileList.get(9).equals(tileList.get(getEmptyTilePosition()))) {
+                    moveTile(8);
+                }
+                break;
+            case 9:
+                if (tileList.get(5).equals(tileList.get(getEmptyTilePosition()))) {
+                    moveTile(9);
+                } else if (tileList.get(10).equals(tileList.get(getEmptyTilePosition()))) {
+                    moveTile(9);
+                } else if (tileList.get(8).equals(tileList.get(getEmptyTilePosition()))) {
+                    moveTile(9);
+                } else if (tileList.get(13).equals(tileList.get(getEmptyTilePosition()))) {
+                    moveTile(9);
+                }
+                break;
+            case 10:
+                if (tileList.get(6).equals(tileList.get(getEmptyTilePosition()))) {
+                    moveTile(10);
+                } else if (tileList.get(11).equals(tileList.get(getEmptyTilePosition()))) {
+                    moveTile(10);
+                } else if (tileList.get(9).equals(tileList.get(getEmptyTilePosition()))) {
+                    moveTile(10);
+                } else if (tileList.get(14).equals(tileList.get(getEmptyTilePosition()))) {
+                    moveTile(10);
+                }
+                break;
+            case 11:
+                if (tileList.get(7).equals(tileList.get(getEmptyTilePosition()))) {
+                    moveTile(11);
+                } else if (tileList.get(10).equals(tileList.get(getEmptyTilePosition()))) {
+                    moveTile(11);
+                } else if (tileList.get(15).equals(tileList.get(getEmptyTilePosition()))) {
+                    moveTile(11);
+                }
+                break;
+            case 12:
+                if (tileList.get(8).equals(tileList.get(getEmptyTilePosition()))) {
+                    moveTile(12);
+                } else if (tileList.get(13).equals(tileList.get(getEmptyTilePosition()))) {
+                    moveTile(12);
+                }
+                break;
+            case 13:
+                if (tileList.get(12).equals(tileList.get(getEmptyTilePosition()))) {
+                    moveTile(13);
+                } else if (tileList.get(9).equals(tileList.get(getEmptyTilePosition()))) {
+                    moveTile(13);
+                } else if (tileList.get(14).equals(tileList.get(getEmptyTilePosition()))) {
+                    moveTile(13);
+                }
+                break;
+            case 14:
+                if (tileList.get(13).equals(tileList.get(getEmptyTilePosition()))) {
+                    moveTile(14);
+                } else if (tileList.get(10).equals(tileList.get(getEmptyTilePosition()))) {
+                    moveTile(14);
+                } else if (tileList.get(15).equals(tileList.get(getEmptyTilePosition()))) {
+                    moveTile(14);
+                }
+                break;
+            case 15:
+                if (tileList.get(11).equals(tileList.get(getEmptyTilePosition()))) {
+                    moveTile(15);
+                } else if (tileList.get(14).equals(tileList.get(getEmptyTilePosition()))) {
+                    moveTile(15);
+                }
+                break;
+
         }
     }
 }
+
 
 
