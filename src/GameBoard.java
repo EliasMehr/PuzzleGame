@@ -38,7 +38,7 @@ public class GameBoard extends JFrame implements ActionListener {
 
         // Graphic engine
         tileList = initiateTiles();
-//        shuffleTiles(tileList);
+        shuffleTiles(tileList);
         renderTiles(tileList);
         addActionListener();
 
