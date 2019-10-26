@@ -38,7 +38,7 @@ public class GameBoard extends JFrame implements ActionListener {
 
         // Graphic engine
         tileList = initiateTiles();
-        shuffleTiles(tileList);
+//        shuffleTiles(tileList);
         renderTiles(tileList);
         addActionListener();
 
@@ -106,6 +106,7 @@ public class GameBoard extends JFrame implements ActionListener {
         Collections.swap(tileList, index, getEmptyTilePosition());
         renderTiles(tileList);
         tilePanel.updateUI();
+        checkIfGameWon();
     }
 
     // receives the clicked tile and checks if blank tile is adjacent via indexes. Calls on moveTile and sends index.
@@ -256,6 +257,21 @@ public class GameBoard extends JFrame implements ActionListener {
                 }
                 break;
 
+        }
+    }
+
+    public void checkIfGameWon() {
+        int correctlyPlacedTile = 0;
+        int tileID = 1;
+        int i = 0;
+        for (Tile tile : tileList) {
+            if (tile.getTileID() == tileID && tileList.get(i) == tile){
+                tileID++;
+                i++;
+                correctlyPlacedTile++;
+                if (correctlyPlacedTile == 15)
+                    System.out.println("You win");
+            }
         }
     }
 }
