@@ -110,6 +110,7 @@ public class GameBoard extends JFrame implements ActionListener {
                     if (tile.getTileID() == 16) {
                         Collections.swap(tileList, 0, getEmptyTilePosition());
                         renderTiles(tileList);
+                        tilePanel.updateUI();
                     }
                 }
         }
