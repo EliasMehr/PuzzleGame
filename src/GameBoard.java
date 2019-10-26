@@ -1,10 +1,13 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.ListIterator;
 
-public class GameBoard extends JFrame {
+public class GameBoard extends JFrame implements ActionListener {
     private int tileID = 1;
     private int width = 600;
     private int height = 600;
@@ -56,6 +59,7 @@ public class GameBoard extends JFrame {
             tiles.add(createdTile);
         }
         return tiles;
+
     }
 
     // Renders the Tiles onMouseActionEvent and repaints to JPanel after an update!
@@ -69,4 +73,47 @@ public class GameBoard extends JFrame {
     public void shuffleTiles(List<Tile> list) {
         Collections.shuffle(list);
     }
+
+    // Find the index of the empty tile.
+    public int getEmptyTilePosition() {
+        int position = 0;
+        for (Tile tile : tileList) {
+            if (tile.getTileID() == 16) {
+                position = tileList.indexOf(tile);
+            }
+        }
+        return position;
+    }
+
+    // Adding action listeners to every tile in our game.
+    public void addActionListener() {
+        for (Tile tile : tileList) {
+            if (tile instanceof Tile) {
+                tile.getTiles().addActionListener(l -> {
+                    System.out.println(tileList.indexOf(tile));
+                    moveTile(tile);
+                });
+            }
+        }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+    }
+
+    // receives the clicked tile switches with the blank tile (IF the blank tile is in the right index on the list)
+    public void moveTile(Tile clickedTile) {
+        switch (tileList.lastIndexOf(clickedTile)) {
+            case 0:
+                for (Tile tile : tileList) {
+                    if (tile.getTileID() == 16) {
+                        Collections.swap(tileList, 0, getEmptyTilePosition());
+                        renderTiles(tileList);
+                    }
+                }
+        }
+    }
 }
+
+
