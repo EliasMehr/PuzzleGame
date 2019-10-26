@@ -43,6 +43,7 @@ public class GameBoard extends JFrame implements ActionListener {
         tileList = initiateTiles();
         shuffleTiles(tileList);
         renderTiles(tileList);
+        addActionListener();
 
         // Initiates background game music
         // utilities.startBackgroundMusic("src/SFX/bgMusic.wav");
