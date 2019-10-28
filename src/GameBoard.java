@@ -10,7 +10,8 @@ import java.util.ListIterator;
 public class GameBoard extends JFrame implements ActionListener {
     private int tileID = 1;
     private int width = 600;
-    private int height = 600;
+    private int height = 700;
+    private int tileCounter = 0;
     private List<Tile> tileList;
 
     Utilities utilities = new Utilities();
@@ -19,8 +20,11 @@ public class GameBoard extends JFrame implements ActionListener {
     JLabel logotypeLabel = new JLabel(logoType);
     JPanel logotypePanel = new JPanel();
     JPanel tilePanel = new JPanel();
+    JPanel statusPanel = new JPanel();
+    JLabel clickCounterText = new JLabel();
+    JLabel timerText = new JLabel();
 
-    GameBoard() {
+    GameBoard() throws InterruptedException {
         GridLayout brickGridLayout = new GridLayout(4, 4);
         brickGridLayout.setHgap(0);
         brickGridLayout.setVgap(0);
@@ -31,16 +35,33 @@ public class GameBoard extends JFrame implements ActionListener {
 
         add(logotypePanel, BorderLayout.NORTH);
         add(tilePanel, BorderLayout.CENTER);
+        add(statusPanel, BorderLayout.SOUTH);
 
         logotypePanel.add(logotypeLabel);
         logotypePanel.setLayout(logoLayout);
         tilePanel.setLayout(brickGridLayout);
+
+        statusPanel.add(clickCounterText);
+        statusPanel.add(timerText);
+
+        clickCounterText.setFont(new Font("Burbank Big Condensed", Font.PLAIN, 14));
+        timerText.setFont(new Font("Burbank Big Condensed", Font.PLAIN, 14));
+
+        statusPanel.setBackground(Color.BLACK);
+        statusPanel.setLayout(logoLayout);
+
+        clickCounterText.setText("Antal klick:");
+        clickCounterText.setForeground(Color.WHITE);
+
+
+        //utilities.initiateGameTimer();
 
         // Graphic engine
         tileList = initiateTiles();
         shuffleTiles(tileList);
         renderTiles(tileList);
         addActionListener();
+        //utilities.initiateGameTimer();
 
         setTitle("15 Puzzle Game by Elias & Valle");
         setSize(width, height);
@@ -92,7 +113,6 @@ public class GameBoard extends JFrame implements ActionListener {
         for (Tile tile : tileList) {
             if (tile instanceof Tile) {
                 tile.getTiles().addActionListener(l -> {
-                    System.out.println(tileList.indexOf(tile));
                     checkIfEmptyTileIsAdjacent(tile);
                 });
             }
@@ -100,14 +120,14 @@ public class GameBoard extends JFrame implements ActionListener {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-
-    }
+    public void actionPerformed(ActionEvent e) { }
 
     // takes an index parameter and swaps the tile in that index with the empty tile.
     public void moveTile(int index) {
         Collections.swap(tileList, index, getEmptyTilePosition());
         renderTiles(tileList);
+        clickCounterText.setText("Antal klick: " + tileCounter++);
+        utilities.startSoundOnTileClick("src/SFX/tileSound.wav");
         tilePanel.updateUI();
         checkIfGameWon();
     }
@@ -268,7 +288,7 @@ public class GameBoard extends JFrame implements ActionListener {
         int tileID = 1;
         int i = 0;
         for (Tile tile : tileList) {
-            if (tile.getTileID() == tileID && tileList.get(i) == tile){
+            if (tile.getTileID() == tileID && tileList.get(i) == tile) {
                 tileID++;
                 i++;
                 correctlyPlacedTile++;

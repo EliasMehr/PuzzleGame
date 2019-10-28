@@ -12,7 +12,6 @@ public class PuzzleGame extends JFrame implements ActionListener {
     Utilities music = new Utilities();
 
     JPanel menuPanel = new JPanel();
-    JPanel bottomPanel = new JPanel();
 
     JButton initiateGame = new JButton(new ImageIcon("src/GFX/MENU/start_btn.png"));
     JButton terminateGame = new JButton(new ImageIcon("src/GFX/MENU/end_btn.png"));
@@ -21,10 +20,8 @@ public class PuzzleGame extends JFrame implements ActionListener {
         GridLayout menuLayout = new GridLayout(1, 2);
 
         add(menuPanel);
-        add(bottomPanel, BorderLayout.SOUTH);
 
         menuPanel.setLayout(menuLayout);
-        bottomPanel.setBackground(Color.BLACK);
         menuPanel.add(initiateGame);
         menuPanel.add(terminateGame);
         music.startBackgroundMusic("src/SFX/bgMusic.wav");
@@ -34,8 +31,12 @@ public class PuzzleGame extends JFrame implements ActionListener {
 
         initiateGame.addActionListener(e -> {
             music.startSoundOnTileClick("src/SFX/tileSound.wav");
-            GameBoard initiateGameBoard = new GameBoard();
-            setVisible(false);
+            try {
+                GameBoard initiateGameBoard = new GameBoard();
+                setVisible(false);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
 
         });
 
