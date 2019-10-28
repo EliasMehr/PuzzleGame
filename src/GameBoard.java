@@ -56,6 +56,7 @@ public class GameBoard extends JFrame implements ActionListener {
             Tile createdTile = new Tile(new JButton(new ImageIcon("src/GFX/brick" + tileID + ".png")), tileID);
             tileID++;
             tiles.add(createdTile);
+            System.out.println("Game engine: Creating bricks -> " + tileID);
         }
         return tiles;
 
@@ -65,12 +66,14 @@ public class GameBoard extends JFrame implements ActionListener {
     public void renderTiles(List<Tile> tiles) {
         tiles.forEach(tile -> {
             tilePanel.add(tile.getTiles());
+            System.out.println("Game engine: Rendering tiles....");
         });
     }
 
     // Shuffle the Tiles after TileInitiate
     public void shuffleTiles(List<Tile> list) {
         Collections.shuffle(list);
+        System.out.println("Game engine: Shuffling bricks....");
     }
 
     // Find the index of the empty tile.
