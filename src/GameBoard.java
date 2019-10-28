@@ -2,18 +2,21 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.sql.Time;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.*;
 import java.util.List;
-import java.util.ListIterator;
+import java.util.Timer;
 import java.util.concurrent.TimeUnit;
 
 public class GameBoard extends JFrame implements ActionListener {
     private int tileID = 1;
     private int width = 600;
     private int height = 700;
-    private int tileCounter = 0;
-    private boolean timerActive;
+    private long timerSeconds;
+    private long timerMinutes;
+    private int tileCounter = 1;
     private List<Tile> tileList;
 
     Utilities utilities = new Utilities();
@@ -52,10 +55,10 @@ public class GameBoard extends JFrame implements ActionListener {
         statusPanel.setBackground(Color.BLACK);
         statusPanel.setLayout(logoLayout);
 
-        clickCounterText.setText("Antal klick:");
+        clickCounterText.setText("Antal klick: 0");
         clickCounterText.setForeground(Color.WHITE);
 
-        timerText.setText("Tid:");
+        timerText.setText("Tid: ");
         timerText.setForeground(Color.WHITE);
 
         // Graphic engine
@@ -63,7 +66,7 @@ public class GameBoard extends JFrame implements ActionListener {
         shuffleTiles(tileList);
         renderTiles(tileList);
         addActionListener();
-        timerActive = true;
+        initiateGameTimer();
 
 
         setTitle("15 Puzzle Game by Elias & Valle");
@@ -72,25 +75,30 @@ public class GameBoard extends JFrame implements ActionListener {
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        while (timerActive) {
-            long secondspassed = 0;
-            long displayMinutes = 0;
-            long starttime = System.currentTimeMillis();
-            while (true) {
-                TimeUnit.SECONDS.sleep(1);
-                long timepassed = System.currentTimeMillis() - starttime;
-                secondspassed = timepassed / 1000;
-                if (secondspassed == 60) {
-                    secondspassed = 0;
-                    starttime = System.currentTimeMillis();
+    }
+
+    // Game timer that updates the time every second by using TimerTask.
+    public void initiateGameTimer() {
+        TimerTask timerTask = new TimerTask() {
+
+            @Override
+            public void run() {
+                String secondZero = "";
+                if (timerSeconds < 59) {
+                    timerSeconds++;
+                    if (timerSeconds < 10)
+                        secondZero = "0";
+                } else {
+                    secondZero = "";
+                    timerSeconds = 0;
+                    timerMinutes++;
                 }
-                if ((secondspassed % 60) == 0)
-                    displayMinutes++;
-
-                timerText.setText("Tid:" + displayMinutes + ":" + secondspassed);
+                timerText.setText("Tid: " + timerMinutes + ':' + secondZero + timerSeconds);
             }
-        }
+        };
 
+        java.util.Timer timer = new Timer();
+        timer.schedule(timerTask, new Date(), 1000);
     }
 
 
@@ -172,6 +180,7 @@ public class GameBoard extends JFrame implements ActionListener {
             }
         }
     }
+
 
     // receives the clicked tile and checks if blank tile is adjacent via indexes. Calls on moveTile and sends index.
     public void checkIfEmptyTileIsAdjacent(Tile clickedTile) {
