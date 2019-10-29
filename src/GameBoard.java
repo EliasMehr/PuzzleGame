@@ -335,6 +335,8 @@ public class GameBoard extends JFrame implements ActionListener {
 
     public void resetGame() throws InterruptedException {
 
+        // Added actionEven sound to reset button
+        utilities.startSoundOnTileClick("src/SFX/tileSound.wav");
         // Removes all components from tilePanel
         tilePanel.removeAll();
         // Reset tileID Counter back to -> 1
