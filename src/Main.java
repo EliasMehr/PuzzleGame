@@ -1,6 +1,8 @@
+import javax.sound.sampled.LineUnavailableException;
+
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws LineUnavailableException {
         PuzzleGame runGameEngine = new PuzzleGame();
     }
 

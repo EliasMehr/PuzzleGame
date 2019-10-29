@@ -9,6 +9,7 @@ public class Utilities extends Thread {
 
     private long timerSeconds;
     private long timerMinutes;
+    private java.util.Timer timer;
 
     public void setTimerSeconds(long timerSeconds) {
         this.timerSeconds = timerSeconds;
@@ -80,9 +81,14 @@ public class Utilities extends Thread {
                 timeInput.setText("Tid: " + timerMinutes + ':' + secondZero + timerSeconds);
             }
         };
+        this.timer = new Timer();
+        this.timer.schedule(timerTask, new Date(), 1000);
 
-        java.util.Timer timer = new Timer();
-        timer.schedule(timerTask, new Date(), 1000);
+    }
+
+    // Removes the timer. (DOES NOT PAUSE)
+    public void stopGameTimer() {
+        this.timer.cancel();
     }
 
 }

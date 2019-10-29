@@ -10,8 +10,11 @@ public class GameBoard extends JFrame implements ActionListener {
     private int tileID = 1;
     private int width = 600;
     private int height = 700;
-    private int tileCounter = 1;
+    private int tileCounter = 0;
     private List<Tile> tileList;
+
+    // A boolean that will be used to determine when the game is over.
+    private boolean gameOver;
 
     // Initiates game settings!
     Utilities utilities = new Utilities();
@@ -31,7 +34,7 @@ public class GameBoard extends JFrame implements ActionListener {
 
 
     // GameBoard Constructor
-    GameBoard() throws InterruptedException {
+    GameBoard() {
 
         // Layouts settings for the panels!
         GridLayout brickGridLayout = new GridLayout(4, 4);
@@ -157,15 +160,18 @@ public class GameBoard extends JFrame implements ActionListener {
 
     // takes an index parameter and swaps the tile in that index with the empty tile.
     public void moveTile(int index) {
-        Collections.swap(tileList, index, getEmptyTilePosition());
-        renderTiles(tileList);
-        clickCounterText.setText("Antal klick: " + tileCounter++);
-        utilities.startSoundOnTileClick("src/SFX/tileSound.wav");
-        tilePanel.updateUI();
-        checkIfGameWon();
+        // Tiles can only be moved if gameOver is false. If you've won you cant move them.
+       if(!gameOver) {
+           Collections.swap(tileList, index, getEmptyTilePosition());
+           renderTiles(tileList);
+           clickCounterText.setText("Antal klick: " + tileCounter++);
+           utilities.startSoundOnTileClick("src/SFX/tileSound.wav");
+           tilePanel.updateUI();
+           checkIfGameWon();
+       }
     }
 
-
+    // Checking if all tiles are in position.
     public void checkIfGameWon() {
         int correctlyPlacedTile = 0;
         int tileID = 1;
@@ -176,7 +182,7 @@ public class GameBoard extends JFrame implements ActionListener {
                 i++;
                 correctlyPlacedTile++;
                 if (correctlyPlacedTile == 15)
-                    System.out.println("You win");
+                    winScreen();
             }
         }
     }
@@ -355,7 +361,30 @@ public class GameBoard extends JFrame implements ActionListener {
         shuffleTiles(tileList);
         renderTiles(tileList);
         addActionListener();
+        gameOver = false;
 
+        utilities.stopGameTimer();
+        utilities.initiateGameTimer(timerText);
+
+
+    }
+
+    // A win screen pops up with a gif and a png image. The Timer is stopped and gameOver is set to true.
+    public void winScreen() {
+        gameOver = true;
+        utilities.stopGameTimer();
+        JFrame winFrame = new JFrame();
+        winFrame.setLayout(new BorderLayout());
+        Icon icon = new ImageIcon("src/GFX/Dance.gif");
+        JLabel label = new JLabel(icon);
+        JLabel youWin = new JLabel( new ImageIcon("src/GFX/WinnerWinner.png"));
+
+        winFrame.setVisible(true);
+        winFrame.setLocationRelativeTo(logoTypePanel);
+        winFrame.add(label, BorderLayout.NORTH);
+        winFrame.add(youWin, BorderLayout.SOUTH);
+        winFrame.setSize(365,580);
+        winFrame.setResizable(false);
 
     }
 }

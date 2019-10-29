@@ -31,12 +31,8 @@ public class PuzzleGame extends JFrame implements ActionListener {
 
         initiateGame.addActionListener(e -> {
             music.startSoundOnTileClick("src/SFX/tileSound.wav");
-            try {
-                GameBoard initiateGameBoard = new GameBoard();
-                setVisible(false);
-            } catch (InterruptedException ex) {
-                ex.printStackTrace();
-            }
+            GameBoard initiateGameBoard = new GameBoard();
+            setVisible(false);
 
         });
 
