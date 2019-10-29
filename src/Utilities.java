@@ -7,6 +7,18 @@ import java.util.TimerTask;
 
 public class Utilities extends Thread {
 
+    private long timerSeconds;
+    private long timerMinutes;
+
+    public void setTimerSeconds(long timerSeconds) {
+        this.timerSeconds = timerSeconds;
+    }
+
+    public void setTimerMinutes(long timerMinutes) {
+        this.timerMinutes = timerMinutes;
+    }
+
+    // Initiates background game music.
     public void startBackgroundMusic(String musicPath) {
         try {
             File music = new File(musicPath);
@@ -28,6 +40,7 @@ public class Utilities extends Thread {
         }
     }
 
+    // Initiates onHoverMouse sound SFX.
     public void startSoundOnTileClick(String musicPath) {
         try {
             File music = new File(musicPath);
@@ -45,6 +58,31 @@ public class Utilities extends Thread {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+
+    // Game timer that updates the time every second by using TimerTask.
+    public void initiateGameTimer(JLabel timeInput) {
+        TimerTask timerTask = new TimerTask() {
+
+            @Override
+            public void run() {
+                String secondZero = "";
+                if (timerSeconds < 59) {
+                    timerSeconds++;
+                    if (timerSeconds < 10)
+                        secondZero = "0";
+                } else {
+                    secondZero = "";
+                    timerSeconds = 0;
+                    timerMinutes++;
+                }
+                timeInput.setText("Tid: " + timerMinutes + ':' + secondZero + timerSeconds);
+            }
+        };
+
+        java.util.Timer timer = new Timer();
+        timer.schedule(timerTask, new Date(), 1000);
     }
 
 }

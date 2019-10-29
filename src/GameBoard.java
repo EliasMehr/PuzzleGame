@@ -2,35 +2,43 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Time;
-import java.time.Duration;
-import java.time.Instant;
 import java.util.*;
 import java.util.List;
-import java.util.Timer;
-import java.util.concurrent.TimeUnit;
 
 public class GameBoard extends JFrame implements ActionListener {
+
     private int tileID = 1;
     private int width = 600;
     private int height = 700;
-    private long timerSeconds;
-    private long timerMinutes;
     private int tileCounter = 1;
     private List<Tile> tileList;
 
+    // Initiates game settings!
     Utilities utilities = new Utilities();
 
-    ImageIcon logoType = new ImageIcon("src/LOGOTYPE/logotype.png");
-    JLabel logotypeLabel = new JLabel(logoType);
-    JPanel logotypePanel = new JPanel();
-    JPanel tilePanel = new JPanel();
-    JPanel statusPanel = new JPanel();
+    // Creating JLabels for GameBoard
+    JLabel logoTypeLabel = new JLabel(new ImageIcon("src/LOGOTYPE/logotype.png"));
     JLabel clickCounterText = new JLabel();
     JLabel timerText = new JLabel();
 
+    // Creating JPanels for GameBoard
+    JPanel logoTypePanel = new JPanel();
+    JPanel tilePanel = new JPanel();
+    JPanel bottomPanel = new JPanel();
+
+    // Creating JButtons
+    JButton resetGame = new JButton(new ImageIcon("src/GFX/MENU/reset_btn.png"));
+
+
+    // GameBoard Constructor
     GameBoard() throws InterruptedException {
+
+        // Layouts settings for the panels!
         GridLayout brickGridLayout = new GridLayout(4, 4);
+        brickGridLayout.setHgap(0);
+        brickGridLayout.setVgap(0);
+
+        GridLayout bottomGridLayout = new GridLayout(1, 3);
         brickGridLayout.setHgap(0);
         brickGridLayout.setVgap(0);
 
@@ -38,35 +46,45 @@ public class GameBoard extends JFrame implements ActionListener {
         logoLayout.setHgap(0);
         logoLayout.setVgap(0);
 
-        add(logotypePanel, BorderLayout.NORTH);
+        // Adding JPanels to JFrame with specific alignment.
+        add(logoTypePanel, BorderLayout.NORTH);
         add(tilePanel, BorderLayout.CENTER);
-        add(statusPanel, BorderLayout.SOUTH);
+        add(bottomPanel, BorderLayout.SOUTH);
 
-        logotypePanel.add(logotypeLabel);
-        logotypePanel.setLayout(logoLayout);
+
+        logoTypePanel.add(logoTypeLabel);
+        logoTypePanel.setLayout(logoLayout);
         tilePanel.setLayout(brickGridLayout);
 
-        statusPanel.add(clickCounterText);
-        statusPanel.add(timerText);
+        bottomPanel.add(resetGame);
+        bottomPanel.add(clickCounterText);
+        bottomPanel.add(timerText);
 
-        clickCounterText.setFont(new Font("Burbank Big Condensed", Font.PLAIN, 14));
-        timerText.setFont(new Font("Burbank Big Condensed", Font.PLAIN, 14));
+        bottomPanel.setBackground(Color.BLACK);
+        bottomPanel.setLayout(bottomGridLayout);
 
-        statusPanel.setBackground(Color.BLACK);
-        statusPanel.setLayout(logoLayout);
+        resetGame.setPreferredSize(new Dimension(200, 50));
+        resetGame.setBackground(Color.BLACK);
+        resetGame.setBorderPainted(false);
+        resetGame.addActionListener(this);
+
+        // JLabel with a specific Font!
+        clickCounterText.setFont(new Font("Burbank Big Condensed", Font.PLAIN, 18));
+        timerText.setFont(new Font("Burbank Big Condensed", Font.PLAIN, 18));
+
 
         clickCounterText.setText("Antal klick: 0");
         clickCounterText.setForeground(Color.WHITE);
 
-        timerText.setText("Tid: ");
         timerText.setForeground(Color.WHITE);
 
-        // Graphic engine
+
+        // Graphic engine & game configuration
         tileList = initiateTiles();
         shuffleTiles(tileList);
         renderTiles(tileList);
         addActionListener();
-        initiateGameTimer();
+        utilities.initiateGameTimer(timerText);
 
 
         setTitle("15 Puzzle Game by Elias & Valle");
@@ -76,31 +94,6 @@ public class GameBoard extends JFrame implements ActionListener {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
     }
-
-    // Game timer that updates the time every second by using TimerTask.
-    public void initiateGameTimer() {
-        TimerTask timerTask = new TimerTask() {
-
-            @Override
-            public void run() {
-                String secondZero = "";
-                if (timerSeconds < 59) {
-                    timerSeconds++;
-                    if (timerSeconds < 10)
-                        secondZero = "0";
-                } else {
-                    secondZero = "";
-                    timerSeconds = 0;
-                    timerMinutes++;
-                }
-                timerText.setText("Tid: " + timerMinutes + ':' + secondZero + timerSeconds);
-            }
-        };
-
-        java.util.Timer timer = new Timer();
-        timer.schedule(timerTask, new Date(), 1000);
-    }
-
 
     // Initiating the tiles and giving correct imageIcon, ID and creating JButtons
     public List<Tile> initiateTiles() {
@@ -153,6 +146,13 @@ public class GameBoard extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == resetGame) {
+            try {
+                resetGame();
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 
     // takes an index parameter and swaps the tile in that index with the empty tile.
@@ -331,6 +331,30 @@ public class GameBoard extends JFrame implements ActionListener {
                 break;
 
         }
+    }
+
+    public void resetGame() throws InterruptedException {
+
+        // Removes all components from tilePanel
+        tilePanel.removeAll();
+        // Reset tileID Counter back to -> 1
+        tileID = 1;
+        // Resetting counterText to default & tileCounter back to -> 0;
+        clickCounterText.setText("Antal klick: " + (tileCounter = 0));
+        // Clearing the list of tiles
+        tileList.clear();
+
+        // Reset timer values back to -> 0 & -> -1
+        utilities.setTimerMinutes(0);
+        utilities.setTimerSeconds(-1);
+
+        //Initiating the game again
+        tileList = initiateTiles();
+        shuffleTiles(tileList);
+        renderTiles(tileList);
+        addActionListener();
+
+
     }
 }
 
