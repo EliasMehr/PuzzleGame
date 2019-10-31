@@ -90,7 +90,6 @@ public class Utilities extends Thread {
     // Removes the timer. (DOES NOT PAUSE)
     public void stopGameTimer() {
 //        this.timer.cancel();
-
         getTimer().cancel();
 
 
