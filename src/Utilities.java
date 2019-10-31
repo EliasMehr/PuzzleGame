@@ -19,6 +19,7 @@ public class Utilities extends Thread {
         this.timerMinutes = timerMinutes;
     }
 
+
     // Initiates background game music.
     public void startBackgroundMusic(String musicPath) {
         try {
@@ -88,8 +89,15 @@ public class Utilities extends Thread {
 
     // Removes the timer. (DOES NOT PAUSE)
     public void stopGameTimer() {
-        this.timer.cancel();
+//        this.timer.cancel();
+
+        getTimer().cancel();
+
+
     }
 
+    public Timer getTimer() {
+        return timer;
+    }
 }
 

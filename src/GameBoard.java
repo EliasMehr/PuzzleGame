@@ -88,7 +88,7 @@ public class GameBoard extends JFrame implements ActionListener {
         renderTiles(tileList);
         addActionListener();
         utilities.initiateGameTimer(timerText);
-
+        winScreen();
 
         setTitle("15 Puzzle Game by Elias & Valle");
         setSize(width, height);
@@ -115,7 +115,7 @@ public class GameBoard extends JFrame implements ActionListener {
     public void renderTiles(List<Tile> tiles) {
         tiles.forEach(tile -> {
             tilePanel.add(tile.getTiles());
-            System.out.println("Game engine: Rendering tiles....");
+            System.out.println("Game engine: Rendering tiles...." + tile.getTileID());
         });
     }
 
@@ -368,6 +368,11 @@ public class GameBoard extends JFrame implements ActionListener {
 
 
     }
+
+    public void startGameWithDirectWin() {
+
+    }
+
 
     // A win screen pops up with a gif and a png image. The Timer is stopped and gameOver is set to true.
     public void winScreen() {
